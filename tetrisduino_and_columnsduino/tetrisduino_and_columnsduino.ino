@@ -1,7 +1,7 @@
 
-#include <TFT.h>
-#include <SPI.h>
 #include <Esplora.h>
+#include <SPI.h>
+#include <TFT.h>
 #include <EEPROM.h>
 
 class Color
@@ -401,7 +401,7 @@ namespace ActivityManager
         ONGOING_GAME,
         GAME_OVER
 
-    } Activity;
+    };
 
     class ActivityLoop
     {
@@ -709,16 +709,16 @@ namespace BoardGame
         const char *TITLE;
 
         GravityGame(Board &board, Piece &currentPiece, Piece &nextPiece, const char *title, const char *bestScoreLabel) :
+            bestScoreLabel   (bestScoreLabel),
+            bestScore        (0),
             board            (board),
             currentPiece     (currentPiece),
             nextPiece        (nextPiece),
-            TITLE            (title),
-            bestScoreLabel   (bestScoreLabel),
-            bestScore        (0),
             moveDownRetarder (100),
-            keyDownRetarder  ( 30),
             keyRetarder      (150),
-            clearRowsRetarder(100)
+            keyDownRetarder  ( 30),
+            clearRowsRetarder(100),
+            TITLE            (title)
         {
             PermanentStorage.readBlockInt(bestScoreLabel, this->bestScore);
         }
@@ -1680,7 +1680,7 @@ namespace BoardGame
         }
 
     public:
-        GameOver(Board &board) : fillBoardRetarder(30), board(board)
+        GameOver(Board &board) : board(board), fillBoardRetarder(30)
         {
         }
 
