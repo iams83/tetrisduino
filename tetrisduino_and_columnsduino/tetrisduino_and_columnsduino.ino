@@ -7,103 +7,40 @@
 class Color
 {
 public:
-    byte r, g, b;
+    int c;
 
-    Color() : r(0), g(0), b(0)
-    {
-    }
+    Color() : c(0) {}
 
-    Color(long rgb) :
-        r((rgb >> 16) & 255),
-        g((rgb >> 8) & 255),
-        b((rgb >> 0) & 255)
-    {
-    }
+    Color(int rgb) : c(rgb) {}
 
-    Color(byte r, byte g, byte b) : r(r), g(g), b(b)
-    {
-    }
-
-    static Color fromHSV(byte h, byte s, byte v)
-    {
-        Color rgb;
-        unsigned char region, remainder, p, q, t;
-
-        if (s == 0)
-        {
-            rgb.r = v;
-            rgb.g = v;
-            rgb.b = v;
-            return rgb;
-        }
-
-        region = h / 43;
-        remainder = (h - (region * 43)) * 6;
-
-        p = (v * (255 - s)) >> 8;
-        q = (v * (255 - ((s * remainder) >> 8))) >> 8;
-        t = (v * (255 - ((s * (255 - remainder)) >> 8))) >> 8;
-
-        switch (region)
-        {
-            case 0:
-                rgb.r = v; rgb.g = t; rgb.b = p;
-                break;
-            case 1:
-                rgb.r = q; rgb.g = v; rgb.b = p;
-                break;
-            case 2:
-                rgb.r = p; rgb.g = v; rgb.b = t;
-                break;
-            case 3:
-                rgb.r = p; rgb.g = q; rgb.b = v;
-                break;
-            case 4:
-                rgb.r = t; rgb.g = p; rgb.b = v;
-                break;
-            default:
-                rgb.r = v; rgb.g = p; rgb.b = q;
-                break;
-        }
-
-        return rgb;
-    }
+    byte r() const { return 0xFF & (this->c >> 16); }
+    byte g() const { return 0xFF & (this->c >> 8); }
+    byte b() const { return 0xFF & (this->c); }
 
     void EsploraTFT_background() const
     {
-        EsploraTFT.background(this->b, this->g, this->r);
+        EsploraTFT.background(this->b(), this->g(), this->r());
     }
 
     void EsploraTFT_stroke() const
     {
-        EsploraTFT.stroke(this->b, this->g, this->r);
+        EsploraTFT.stroke(this->b(), this->g(), this->r());
     }
 
     void EsploraTFT_fill() const
     {
-        EsploraTFT.fill(this->b, this->g, this->r);
+        EsploraTFT.fill(this->b(), this->g(), this->r());
     }
 };
 
 namespace BasicColors
 {
     Color WHITE  (0xFFFFFFL);
-    Color SILVER (0xC0C0C0L);
     Color GRAY   (0x808080L);
     Color BLACK  (0x000000L);
-    Color RED    (0xFF0000L);
-    Color MAROON (0x800000L);
     Color YELLOW (0xFFFF00L);
     Color OLIVE  (0x808000L);
-    Color LIME   (0x00FF00L);
-    Color GREEN  (0x008000L);
-    Color AQUA   (0x00FFFFL);
-    Color TEAL   (0x008080L);
     Color BLUE   (0x0000FFL);
-    Color NAVY   (0x000080L);
-    Color FUCHSIA(0xFF00FFL);
-    Color PURPLE (0x800080L);
-
     Color LIGHT_GRAY(0xC0C0C0L);
     Color DARK_GRAY(0x404040L);
 }
@@ -165,9 +102,7 @@ public:
 
         return false;
     }
-};
-
-_SwitchesManager SwitchesManager;
+} SwitchesManager;
 
 const char *SOUND_ICON =
         "    #  # "
@@ -249,9 +184,7 @@ public:
             }
         }
     }
-};
-
-_SoundManager SoundManager;
+} SoundManager;
 
 class _PermanentStorage
 {
@@ -389,9 +322,7 @@ public:
         return true;
     }
 
-};
-
-_PermanentStorage PermanentStorage;
+} PermanentStorage;
 
 namespace ActivityManager
 {
