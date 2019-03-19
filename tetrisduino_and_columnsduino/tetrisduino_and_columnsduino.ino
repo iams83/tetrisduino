@@ -108,19 +108,13 @@ const char *SOUND_ICON =
         "    #  # "
         "   ##   #"
         "##### # #"
-        "##### # #"
-        "##### # #"
-        "   ##   #"
-        "    #  # ";
+        "##### # #";
 
 const char *NO_SOUND_ICON =
         "    #    "
         "   ##    "
         "##### # #"
-        "#####  # "
-        "##### # #"
-        "   ##    "
-        "    #    ";
+        "#####  # ";
 
 class _SoundManager
 {
@@ -163,17 +157,17 @@ public:
             {
                 char const *icon = this->isFXEnabled ? SOUND_ICON : NO_SOUND_ICON;
 
-                for (int i = 0; i < 7; i ++)
-                for (int j = 0; j < 9; j ++)
+                byte rows[] = { 0, 1, 2, 3, 2, 1, 0 };
+
+                for (byte i = 0; i < 7; i ++)
+                for (byte j = 0; j < 9; j ++)
                 {
-                    if (*icon == ' ')
+                    if (icon[rows[i] * 9 + j] == ' ')
                         this->background.EsploraTFT_stroke();
                     else
                         BasicColors::YELLOW.EsploraTFT_stroke();
 
                     EsploraTFT.point(offx + j, 2 + i);
-
-                    icon ++;
                 }
             }
             else
